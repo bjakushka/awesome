@@ -1,4 +1,4 @@
-awesome-config
+Awesome WM configuration
 ==============
 
-Awesome WM configuration
+Put it to '~/config/'
