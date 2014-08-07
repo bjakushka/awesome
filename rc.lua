@@ -69,6 +69,8 @@ layouts =
 }
 -- }}}
 
+
+
 -- {{{ Tags
 -- Define a tag table which hold all screen tags.
 tags = {
@@ -80,6 +82,8 @@ for s = 1, screen.count() do
     tags[s] = awful.tag(tags.names, s, tags.layouts)
 end
 -- }}}
+
+
 
 -- {{{ Menu
 -- Create a laucher widget and a main menu
@@ -99,6 +103,7 @@ mymainmenu = awful.menu({ items = { { "awesome", myawesomemenu, beautiful.awesom
 mylauncher = awful.widget.launcher({ image = image(beautiful.awesome_icon),
                                      menu = mymainmenu })
 -- }}}
+
 
 
 -- {{{ Wibox
@@ -184,6 +189,8 @@ for s = 1, screen.count() do
 end
 -- }}}
 
+
+
 -- {{{ Mouse bindings
 root.buttons(awful.util.table.join(
     awful.button({ }, 3, function () mymainmenu:toggle() end),
@@ -191,6 +198,8 @@ root.buttons(awful.util.table.join(
     awful.button({ }, 5, awful.tag.viewprev)
 ))
 -- }}}
+
+
 
 -- {{{ Key bindings
 globalkeys = awful.util.table.join(
@@ -225,7 +234,6 @@ globalkeys = awful.util.table.join(
         end),
 
     -- Standard program
-    awful.key({ modkey,           }, "Return", function () awful.util.spawn(terminal) end),
     awful.key({ modkey, "Control" }, "r", awesome.restart),
     awful.key({ modkey, "Shift"   }, "q", awesome.quit),
 
@@ -252,9 +260,16 @@ globalkeys = awful.util.table.join(
               end),
 
 
-    -- bjakushka@07.10.23
+    -- bjakushka@07.10.14
     -- keyboard changes
-    awful.key({ "Mod1"            }, "Shift_L",  function ( ) kbdcfg.switch() end)
+    awful.key({ "Mod1"            }, "Shift_L",  function ( ) kbdcfg.switch() end),
+
+    -- run applications
+    awful.key({ modkey, "Control" }, "e", function () run_or_raise("emacs", { class = "Emacs24" }) end),
+    awful.key({ modkey, "Control" }, "c", function () run_or_raise("google-chrome-stable", { class = "Google-chrome-stable" }) end),
+    awful.key({ modkey, "Control" }, "f", function () run_or_raise("firefox", { class = "Firefox" }) end),
+    awful.key({ modkey,           }, "Return", function () run_or_raise(terminal, { class = "Gnome-terminal" }) end)
+
 )
 
 clientkeys = awful.util.table.join(
@@ -322,9 +337,13 @@ clientbuttons = awful.util.table.join(
     awful.button({ modkey }, 1, awful.mouse.client.move),
     awful.button({ modkey }, 3, awful.mouse.client.resize))
 
+
+
 -- Set keys
 root.keys(globalkeys)
 -- }}}
+
+
 
 -- {{{ Rules
 awful.rules.rules = {
@@ -338,9 +357,14 @@ awful.rules.rules = {
     
     -- Console
     { rule = { class = "Gnome-terminal" },
-      properties = { tag = tags[1][2] } },
+      properties = {
+	 tag = tags[1][6],
+	 switchtotag = true
+    } },
 
     -- Browsers
+--    { rule_any = { class = { "Firefox", "Google-chrome", "Google-chrome-stable" } }
+--      properties = { tag = tags[1][2] } },
     { rule = { class = "Firefox" },
       properties = { tag = tags[1][2] } },
     { rule = { class = "Google-chrome" },
@@ -350,11 +374,17 @@ awful.rules.rules = {
 
     -- Editors
     { rule = { class = "Emacs24" },
-      properties = { tag = tags[1][3] } },
+      properties = {
+	 tag = tags[1][3],
+	 switchtotag = true
+    } },
 
     -- Messengers
     { rule = { class = "Skype" },
-      properties = { tag = tags[1][4] } },
+      properties = { 
+	 tag = tags[1][4],
+	 floating=true
+      } },
 }
 -- }}}
 
@@ -388,3 +418,62 @@ end)
 client.add_signal("focus", function(c) c.border_color = beautiful.border_focus end)
 client.add_signal("unfocus", function(c) c.border_color = beautiful.border_normal end)
 -- }}}
+
+
+
+
+
+-- bjakushka@07.08.14
+-- Run Or Rise
+--- Spawns cmd if no client can be found matching properties
+-- If such a client can be found, pop to first tag where it is visible, and give it focus
+-- @param cmd the command to execute
+-- @param properties a table of properties to match against clients.  Possible entries: any properties of the client object
+function run_or_raise(cmd, properties)
+   local clients = client.get()
+   local focused = awful.client.next(0)
+   local findex = 0
+   local matched_clients = {}
+   local n = 0
+   for i, c in pairs(clients) do
+      --make an array of matched clients
+      if match(properties, c) then
+         n = n + 1
+         matched_clients[n] = c
+         if c == focused then
+            findex = n
+         end
+      end
+   end
+   if n > 0 then
+      local c = matched_clients[1]
+      -- if the focused window matched switch focus to next in list
+      if 0 < findex and findex < n then
+         c = matched_clients[findex+1]
+      end
+      local ctags = c:tags()
+      if #ctags == 0 then
+         -- ctags is empty, show client on current tag
+         local curtag = awful.tag.selected()
+         awful.client.movetotag(curtag, c)
+      else
+         -- Otherwise, pop to first tag client is visible on
+         awful.tag.viewonly(ctags[1])
+      end
+      -- And then focus the client
+      client.focus = c
+      c:raise()
+      return
+   end
+   awful.util.spawn(cmd)
+end
+
+-- Returns true if all pairs in table1 are present in table2
+function match (table1, table2)
+   for k, v in pairs(table1) do
+      if table2[k] ~= v and not table2[k]:find(v) then
+         return false
+      end
+   end
+   return true
+end
