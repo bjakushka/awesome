@@ -100,6 +100,7 @@ mylauncher = awful.widget.launcher({ image = image(beautiful.awesome_icon),
                                      menu = mymainmenu })
 -- }}}
 
+
 -- {{{ Wibox
 -- Create a textclock widget
 mytextclock = awful.widget.textclock({ align = "right" })
@@ -152,6 +153,33 @@ mytasklist.buttons = awful.util.table.join(
                                               if client.focus then client.focus:raise() end
                                           end))
 
+
+
+-- bjakushka@07.09.14
+-- keyboard map indicator and changer
+kbdcfg = {}
+kbdcfg.cmd = "setxkbmap"
+kbdcfg.layout = { "us", "ru" }
+kbdcfg.current = 1 -- us is our default layout
+kbdcfg.widget = widget({ type="textbox", align="right" })
+kbdcfg.set_widget_text = function ()
+   local layout_text_table = { ["us"]="EN", ["ru"]="RU" }
+   local layout = kbdcfg.layout[kbdcfg.current]
+   kbdcfg.widget.text = "  <b>" .. string.upper(layout_text_table[layout]) .. "</b>  "
+end
+kbdcfg.switch = function ()
+   kbdcfg.current = kbdcfg.current % #(kbdcfg.layout) + 1
+   kbdcfg.set_widget_text()
+   os.execute( kbdcfg.cmd .. " " .. kbdcfg.layout[kbdcfg.current] .. ",us" )
+end
+kbdcfg.set_widget_text()
+-- Mouse bindings (click on widget)
+kbdcfg.widget:buttons(awful.util.table.join(
+			 awful.button({ }, 1, function() kbdcfg.switch() end)
+))
+
+
+
 for s = 1, screen.count() do
     -- Create a promptbox for each screen
     mypromptbox[s] = awful.widget.prompt({ layout = awful.widget.layout.horizontal.leftright })
@@ -173,7 +201,7 @@ for s = 1, screen.count() do
 
     -- Create the wibox
     mywibox[s] = awful.wibox({ position = "top", screen = s })
-    -- Add widgets to the wibox - order matters
+    -- Add widgets the wibox - order matters
     mywibox[s].widgets = {
         {
             mylauncher,
@@ -183,6 +211,7 @@ for s = 1, screen.count() do
         },
         mylayoutbox[s],
         mytextclock,
+	kbdcfg.widget,
         s == 1 and mysystray or nil,
         mytasklist[s],
         layout = awful.widget.layout.horizontal.rightleft
@@ -255,7 +284,12 @@ globalkeys = awful.util.table.join(
                   mypromptbox[mouse.screen].widget,
                   awful.util.eval, nil,
                   awful.util.getdir("cache") .. "/history_eval")
-              end)
+              end),
+
+
+    -- bjakushka@07.10.23
+    -- keyboard changes
+    awful.key({ "Mod1"            }, "Shift_L",  function ( ) kbdcfg.switch() end)
 )
 
 clientkeys = awful.util.table.join(
