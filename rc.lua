@@ -371,14 +371,21 @@ awful.rules.rules = {
     } },
 
     -- Browsers
---    { rule_any = { class = { "Firefox", "Google-chrome", "Google-chrome-stable" } }
---      properties = { tag = tags[1][2] } },
     { rule = { class = "Firefox" },
-      properties = { tag = tags[1][2] } },
+      properties = {
+	 tag = tags[1][2],
+    	 switchtotag = true
+    } },
     { rule = { class = "Google-chrome" },
-      properties = { tag = tags[1][2] } },
+      properties = {
+	 tag = tags[1][2],
+    	 switchtotag = true
+    } },
     { rule = { class = "Google-chrome-stable" },
-      properties = { tag = tags[1][2] } },
+      properties = {
+	 tag = tags[1][2],
+    	 switchtotag = true
+    } },
 
     -- Editors
     { rule = { class = "Emacs24" },
