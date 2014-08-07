@@ -272,7 +272,8 @@ globalkeys = awful.util.table.join(
     awful.key({ modkey, "Control" }, "e", function () run_or_raise("emacs", { class = "Emacs24" }) end),
     awful.key({ modkey, "Control" }, "c", function () run_or_raise("google-chrome-stable", { class = "Google-chrome-stable" }) end),
     awful.key({ modkey, "Control" }, "f", function () run_or_raise("firefox", { class = "Firefox" }) end),
-    awful.key({ modkey,           }, "Return", function () run_or_raise(terminal, { class = "Gnome-terminal" }) end)
+    awful.key({ modkey,           }, "Return", function () run_or_raise(terminal, { class = "Gnome-terminal" }) end),
+    awful.key({ modkey, "Mod1"    }, "Return", function () awful.util.spawn(terminal) end)
 
 )
 
@@ -353,11 +354,14 @@ root.keys(globalkeys)
 awful.rules.rules = {
     -- All clients will match this rule.
     { rule = { },
-      properties = { border_width = beautiful.border_width,
-                     border_color = beautiful.border_normal,
-                     focus = true,
-                     keys = clientkeys,
-                     buttons = clientbuttons } },
+      properties = {
+	 border_width = beautiful.border_width,
+	 border_color = beautiful.border_normal,
+	 focus = true,
+	 keys = clientkeys,
+	 buttons = clientbuttons
+      }
+    },
     
     -- Console
     { rule = { class = "Gnome-terminal" },
