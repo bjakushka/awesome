@@ -42,7 +42,7 @@ end
 
 -- {{{ Variable definitions
 -- Themes define colours, icons, and wallpapers
-beautiful.init(awful.util.getdir("config") .. "/themes/bjakushka/theme.lua")
+beautiful.init(awful.util.getdir("config") .. "/themes/anonymous/theme.lua")
 
 -- This is used later as the default terminal and editor to run.
 terminal = "x-terminal-emulator"
