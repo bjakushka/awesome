@@ -120,8 +120,6 @@ mytaglist.buttons = awful.util.table.join()
 mytasklist = {}
 mytasklist.buttons = awful.util.table.join()
 
-
-
 -- bjakushka@07.09.14
 -- keyboard map indicator and changer
 kbdcfg = {}
@@ -337,15 +335,26 @@ awful.rules.rules = {
                      focus = true,
                      keys = clientkeys,
                      buttons = clientbuttons } },
-    { rule = { class = "MPlayer" },
-      properties = { floating = true } },
-    { rule = { class = "pinentry" },
-      properties = { floating = true } },
-    { rule = { class = "gimp" },
-      properties = { floating = true } },
-    -- Set Firefox to always map on tags number 2 of screen 1.
-    -- { rule = { class = "Firefox" },
-    --   properties = { tag = tags[1][2] } },
+    
+    -- Console
+    { rule = { class = "Gnome-terminal" },
+      properties = { tag = tags[1][2] } },
+
+    -- Browsers
+    { rule = { class = "Firefox" },
+      properties = { tag = tags[1][2] } },
+    { rule = { class = "Google-chrome" },
+      properties = { tag = tags[1][2] } },
+    { rule = { class = "Google-chrome-stable" },
+      properties = { tag = tags[1][2] } },
+
+    -- Editors
+    { rule = { class = "Emacs24" },
+      properties = { tag = tags[1][3] } },
+
+    -- Messengers
+    { rule = { class = "Skype" },
+      properties = { tag = tags[1][4] } },
 }
 -- }}}
 
