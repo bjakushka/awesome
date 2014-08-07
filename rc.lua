@@ -112,25 +112,13 @@ mysystray = widget({ type = "systray" })
 mywibox = {}
 mypromptbox = {}
 mylayoutbox = {}
+
+-- Tags
 mytaglist = {}
-mytaglist.buttons = awful.util.table.join(
-                    awful.button({ }, 1, awful.tag.viewonly),
-                    awful.button({ modkey }, 1, awful.client.movetotag),
-                    awful.button({ }, 3, awful.tag.viewtoggle),
-                    awful.button({ modkey }, 3, awful.client.toggletag),
-                    awful.button({ }, 4, awful.tag.viewnext),
-                    awful.button({ }, 5, awful.tag.viewprev)
-                    )
+mytaglist.buttons = awful.util.table.join()
+-- Tasks
 mytasklist = {}
-mytasklist.buttons = awful.util.table.join(
-                     awful.button({ }, 4, function ()
-                                              awful.client.focus.byidx(1)
-                                              if client.focus then client.focus:raise() end
-                                          end),
-                     awful.button({ }, 5, function ()
-                                              awful.client.focus.byidx(-1)
-                                              if client.focus then client.focus:raise() end
-                                          end))
+mytasklist.buttons = awful.util.table.join()
 
 
 
