@@ -269,10 +269,10 @@ globalkeys = awful.util.table.join(
     awful.key({ "Mod1"            }, "Shift_L",  function ( ) kbdcfg.switch() end),
 
     -- run applications
-    awful.key({ modkey, "Control" }, "e", function () run_or_raise("emacs", { class = "Emacs24" }) end),
+    awful.key({ modkey, "Control" }, "e", function () run_or_raise("emacs", { class = {"Emacs","Emacs24"} }) end),
     awful.key({ modkey, "Control" }, "c", function () run_or_raise("google-chrome-stable", { class = "Google-chrome-stable" }) end),
     awful.key({ modkey, "Control" }, "f", function () run_or_raise("firefox", { class = "Firefox" }) end),
-    awful.key({ modkey,           }, "Return", function () run_or_raise(terminal, { class = "Gnome-terminal" }) end),
+    awful.key({ modkey,           }, "Return", function () run_or_raise(terminal, { class = {"Gnome-terminal","X-terminal-emulator"} }) end),
     awful.key({ modkey, "Mod1"    }, "Return", function () awful.util.spawn(terminal) end)
 
 )
@@ -364,31 +364,21 @@ awful.rules.rules = {
     },
     
     -- Console
-    { rule = { class = "Gnome-terminal" },
+    { rule_any = { class = {"Gnome-terminal","X-terminal-emulator"} },
       properties = {
 	 tag = tags[1][6],
 	 switchtotag = true
     } },
 
     -- Browsers
-    { rule = { class = "Firefox" },
-      properties = {
-	 tag = tags[1][2],
-    	 switchtotag = true
-    } },
-    { rule = { class = "Google-chrome" },
-      properties = {
-	 tag = tags[1][2],
-    	 switchtotag = true
-    } },
-    { rule = { class = "Google-chrome-stable" },
+    { rule_any = { class = {"Firefox","Google-chrome","Google-chrome-stable"} },
       properties = {
 	 tag = tags[1][2],
     	 switchtotag = true
     } },
 
     -- Editors
-    { rule = { class = "Emacs24" },
+    { rule_any = { class = {"Emacs","Emacs24"} },
       properties = {
 	 tag = tags[1][3],
 	 switchtotag = true

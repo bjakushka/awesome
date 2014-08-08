@@ -46,9 +46,20 @@ end
 -- Returns true if all pairs in table1 are present in table2
 function match (table1, table2)
    for k, v in pairs(table1) do
-      if table2[k] ~= v and not table2[k]:find(v) then
-         return false
+      if type(v)=="table" then
+	 local result = false
+	 for _,vv in pairs(v) do
+	    if table2[k] == vv or table2[k]:find(vv) then
+	       result = true
+	    end
+	 end
+	 return result
+      else
+	 if table2[k] ~= v and not table2[k]:find(v) then
+	    return false
+	 end
       end
    end
+
    return true
 end
