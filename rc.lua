@@ -44,6 +44,9 @@ end
 -- Themes define colours, icons, and wallpapers
 beautiful.init(awful.util.getdir("config") .. "/themes/anonymous/theme.lua")
 
+-- Default locale
+os.setlocale("ru_RU.utf8")
+
 -- This is used later as the default terminal and editor to run.
 terminal = "termit"
 editor = os.getenv("EDITOR") or "emacs"
