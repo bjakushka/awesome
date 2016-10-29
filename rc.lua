@@ -113,7 +113,11 @@ mylauncher = awful.widget.launcher({ image = image(beautiful.awesome_icon),
 
 -- {{{ Wibox
 -- Create a textclock widget
-mytextclock = awful.widget.textclock({ align = "right" })
+-- %a - day of week (text, short); %A - day of week (text, full)
+-- %y - year (two digit); %Y - year (four digit); %m - month; %s - timestamp (?)
+-- %b - month (text, short); %B - month (text, full); %d - day of month; %D - full date (format: m/d/y)
+-- %H - hours; %M - minues; %S - seconds
+mytextclock = awful.widget.textclock({ align = "right" }, "%d %B, %A | %I:%M:%S", 1)
 
 -- Create a systray
 mysystray = widget({ type = "systray" })
