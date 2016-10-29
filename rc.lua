@@ -147,28 +147,29 @@ mytaglist.buttons = awful.util.table.join()
 mytasklist = {}
 mytasklist.buttons = awful.util.table.join()
 
--- bjakushka@07.09.14
--- keyboard map indicator and changer
-kbdcfg = {}
-kbdcfg.cmd = "setxkbmap"
-kbdcfg.layout = { "us", "ru" }
-kbdcfg.current = 1 -- us is our default layout
-kbdcfg.widget = widget({ type="textbox", align="right" })
-kbdcfg.set_widget_text = function ()
+-- {{{ keyboard map indicator and changer (bjakushka@07.09.14)
+kbd = {}
+kbd.cmd = "setxkbmap"
+kbd.layout = { "us", "ru" }
+kbd.current = 1 -- us is our default layout
+kbd.widget = widget({
+      type="textbox",
+      align="right",
+})
+kbd.set_widget_text = function ()
    local layout_text_table = { ["us"]="EN", ["ru"]="RU" }
-   local layout = kbdcfg.layout[kbdcfg.current]
-   kbdcfg.widget.text = "  <b>" .. string.upper(layout_text_table[layout]) .. "</b>  "
+   local layout = kbd.layout[kbd.current]
+   kbd.widget.text = "  <b>" .. string.upper(layout_text_table[layout]) .. "</b>  "
 end
-kbdcfg.switch = function ()
-   kbdcfg.current = kbdcfg.current % #(kbdcfg.layout) + 1
-   kbdcfg.set_widget_text()
-   os.execute( kbdcfg.cmd .. " " .. kbdcfg.layout[kbdcfg.current] .. ",us" )
+kbd.switch = function ()
+   kbd.current = kbd.current % #(kbd.layout) + 1
+   kbd.set_widget_text()
+   os.execute( kbd.cmd .. " " .. kbd.layout[kbd.current] .. ",us" )
 end
-kbdcfg.set_widget_text()
+kbd.set_widget_text()
 -- Mouse bindings (click on widget)
-kbdcfg.widget:buttons(awful.util.table.join(
-			 awful.button({ }, 1, function() kbdcfg.switch() end)
-))
+kbd.widget:buttons(awful.util.table.join(awful.button({ }, 1, function() kbd.switch() end)))
+-- }}}
 
 
 
@@ -203,7 +204,7 @@ for s = 1, screen.count() do
         },
         mylayoutbox[s],
         mytextclock,
-	kbdcfg.widget,
+	kbd.widget,
         s == 1 and mysystray or nil,
         mytasklist[s],
         layout = awful.widget.layout.horizontal.rightleft
@@ -283,7 +284,8 @@ globalkeys = awful.util.table.join(
 
     -- bjakushka@07.10.14
     -- keyboard changes
-    awful.key({ "Mod1"            }, "Shift_L",  function ( ) kbdcfg.switch() end),
+    awful.key({ "Mod1"            }, "Shift_L",  function ( ) kbd.switch() end),
+    awful.key({ "Control"         }, "Shift_L",  function ( ) kbd.switch() end),
 
     -- run applications
     awful.key({ modkey, "Control" }, "e", function () run_or_raise("emacs", { class = {"Emacs","Emacs24"} }) end),
