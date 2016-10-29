@@ -46,7 +46,7 @@ beautiful.init(awful.util.getdir("config") .. "/themes/anonymous/theme.lua")
 
 -- This is used later as the default terminal and editor to run.
 terminal = "termit"
-editor = os.getenv("EDITOR") or "editor"
+editor = os.getenv("EDITOR") or "emacs"
 editor_cmd = terminal .. " -e " .. editor
 
 -- Default modkey.
@@ -272,7 +272,7 @@ globalkeys = awful.util.table.join(
     awful.key({ modkey, "Control" }, "e", function () run_or_raise("emacs", { class = {"Emacs","Emacs24"} }) end),
     awful.key({ modkey, "Control" }, "c", function () run_or_raise("google-chrome-stable", { class = "Google-chrome-stable" }) end),
     awful.key({ modkey, "Control" }, "f", function () run_or_raise("firefox", { class = "Firefox" }) end),
-    awful.key({ modkey,           }, "Return", function () run_or_raise(terminal, { class = {"Gnome-terminal","X-terminal-emulator"} }) end),
+    awful.key({ modkey,           }, "Return", function () run_or_raise(terminal, { class = {"Termit","Gnome-terminal","X-terminal-emulator"} }) end),
     awful.key({ modkey, "Mod1"    }, "Return", function () awful.util.spawn(terminal) end)
 
 )
@@ -364,7 +364,7 @@ awful.rules.rules = {
     },
     
     -- Console
-    { rule_any = { class = {"Gnome-terminal","X-terminal-emulator"} },
+    { rule_any = { class = {"Termit","Gnome-terminal","X-terminal-emulator"} },
       properties = {
 	 tag = tags[1][6],
 	 switchtotag = true
