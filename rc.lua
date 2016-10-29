@@ -59,6 +59,7 @@ editor_cmd = terminal .. " -e " .. editor
 -- I suggest you to remap Mod4 to another key using xmodmap or other tools.
 -- However, you can use another modifier like Mod1, but it may interact with others.
 modkey = "Mod4"
+altkey = "Mod1"
 
 -- Table of layouts to cover with awful.layout.inc, order matters.
 layouts =
@@ -103,7 +104,8 @@ mainMenu_awesome = {
    { "Quit", awesome.quit }
 }
 
-mainMenu = awful.menu({
+mainMenu = awful.menu(
+   {
       items = {
 	 { "Firefox", function () run_or_raise(browser, { class = "Firefox" }) end },
 
@@ -114,7 +116,8 @@ mainMenu = awful.menu({
          { "Terminal", terminal },	 
       },
       width = 250
-})
+   }
+)
 
 mylauncher = awful.widget.launcher({
       image = image(beautiful.awesome_icon),
@@ -147,6 +150,8 @@ mytaglist.buttons = awful.util.table.join()
 mytasklist = {}
 mytasklist.buttons = awful.util.table.join()
 
+
+
 -- {{{ keyboard map indicator and changer (bjakushka@07.09.14)
 kbd = {}
 kbd.cmd = "setxkbmap"
@@ -173,6 +178,7 @@ kbd.widget:buttons(awful.util.table.join(awful.button({ }, 1, function() kbd.swi
 
 
 
+-- {{{
 for s = 1, screen.count() do
     -- Create a promptbox for each screen
     mypromptbox[s] = awful.widget.prompt({ layout = awful.widget.layout.horizontal.leftright })
@@ -270,9 +276,10 @@ globalkeys = awful.util.table.join(
 
     awful.key({ modkey, "Control" }, "n", awful.client.restore),
 
-    -- Prompt
+    -- Prompts
+    ---- Shell code:
     awful.key({ modkey },            "r",     function () mypromptbox[mouse.screen]:run() end),
-
+    ---- Lua code:
     awful.key({ modkey }, "x",
               function ()
                   awful.prompt.run({ prompt = "Run Lua code: " },
@@ -284,7 +291,7 @@ globalkeys = awful.util.table.join(
 
     -- bjakushka@07.10.14
     -- keyboard changes
-    awful.key({ "Mod1"            }, "Shift_L",  function ( ) kbd.switch() end),
+    awful.key({ altkey            }, "Shift_L",  function ( ) kbd.switch() end),
     awful.key({ "Control"         }, "Shift_L",  function ( ) kbd.switch() end),
 
     -- run applications
@@ -292,7 +299,7 @@ globalkeys = awful.util.table.join(
     awful.key({ modkey, "Control" }, "c", function () run_or_raise("google-chrome-stable", { class = "Google-chrome-stable" }) end),
     awful.key({ modkey, "Control" }, "f", function () run_or_raise("firefox", { class = "Firefox" }) end),
     awful.key({ modkey,           }, "Return", function () run_or_raise(terminal, { class = {"Termit","Gnome-terminal","X-terminal-emulator"} }) end),
-    awful.key({ modkey, "Mod1"    }, "Return", function () awful.util.spawn(terminal) end)
+    awful.key({ modkey, altkey    }, "Return", function () awful.util.spawn(terminal) end)
 
 )
 
