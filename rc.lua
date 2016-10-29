@@ -49,6 +49,7 @@ os.setlocale("ru_RU.utf8")
 
 -- This is used later as the default terminal and editor to run.
 terminal = "termit"
+browser = "iceweasel"
 editor = os.getenv("EDITOR") or "emacs"
 editor_cmd = terminal .. " -e " .. editor
 
@@ -95,21 +96,30 @@ end
 
 -- {{{ Menu
 -- Create a laucher widget and a main menu
-myawesomemenu = {
-   { "manual", terminal .. " -e man awesome" },
-   { "edit config", editor_cmd .. " " .. awesome.conffile },
-   { "restart", awesome.restart },
-   { "quit", awesome.quit }
+mainMenu_awesome = {
+   { "Manual", terminal .. " -e man awesome" },
+   { "Edit config", editor .. " " .. awesome.conffile },
+   { "Restart", awesome.restart },
+   { "Quit", awesome.quit }
 }
 
-mymainmenu = awful.menu({ items = { { "awesome", myawesomemenu, beautiful.awesome_icon },
-                                    { "Debian", debian.menu.Debian_menu.Debian },
-                                    { "open terminal", terminal }
-                                  }
-                        })
+mainMenu = awful.menu({
+      items = {
+	 { "Firefox", function () run_or_raise(browser, { class = "Firefox" }) end },
 
-mylauncher = awful.widget.launcher({ image = image(beautiful.awesome_icon),
-                                     menu = mymainmenu })
+	 { "" },
+
+         { "Awesome", mainMenu_awesome, beautiful.awesome_icon },
+         { "Debian", debian.menu.Debian_menu.Debian },
+         { "Terminal", terminal },	 
+      },
+      width = 250
+})
+
+mylauncher = awful.widget.launcher({
+      image = image(beautiful.awesome_icon),
+      menu = mainMenu
+})
 -- }}}
 
 
