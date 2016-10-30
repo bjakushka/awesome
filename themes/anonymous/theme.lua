@@ -18,7 +18,7 @@ theme.fg_normal     = "#DDDDFF"
 theme.fg_focus      = "#F0DFAF"
 theme.fg_urgent     = "#CC9393"
 
-theme.border_width  = "0"
+theme.border_width  = "3"
 theme.border_normal = "#F3F3F3"
 theme.border_focus  = "#7F7F7F"
 theme.border_marked = "#CC9393"
@@ -31,7 +31,7 @@ theme.border_marked = "#CC9393"
 -- tooltip_[font|opacity|fg_color|bg_color|border_width|border_color]
 -- mouse_finder_[color|timeout|animate_timeout|radius|factor]
 -- Example:
---theme.taglist_bg_focus = "#ff0000"
+theme.taglist_bg_focus = "#090909"
 
 -- Display the taglist squares
 theme.taglist_squares_sel   = theme_dir .. "/taglist/squarefw.png"
@@ -43,7 +43,7 @@ theme.tasklist_floating_icon = theme_dir .. "/tasklist/floatingw.png"
 -- menu_[bg|fg]_[normal|focus]
 -- menu_[border_color|border_width]
 theme.menu_submenu_icon = theme_dir .. "/submenu.png"
-theme.menu_height = "15"
+theme.menu_height = "20"
 theme.menu_width  = "100"
 
 -- You can add as many variables as
