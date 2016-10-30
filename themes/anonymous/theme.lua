@@ -9,7 +9,7 @@ theme_dir = os.getenv("HOME") .. "/.config/awesome/themes/anonymous"
 
 theme = {}
 
-theme.font          = "Consolas 12"
+theme.font          = "Consolas 10"
 
 theme.bg_normal     = "#1A1A1A"
 theme.bg_focus      = "#313131"
