@@ -128,7 +128,7 @@ mymainmenu = awful.menu(
    {
       items = {
 	 { "Firefox", function () run_or_raise(browser_firefox, { class = "Firefox" }) end },
-	 { "Chrome", function () run_or_raise(browser_google_chrome, { class = "Chrome" }) end },
+	 { "Chrome", function () run_or_raise(browser_google_chrome, { class = "Google-chrome" }) end },
 	 { "PHPStorm", function () run_or_raise(ide_phpstorm, { class = "PHPStorm" }) end },
 	 { "PyCharm", function () run_or_raise(ide_pycharm, { class = "PyCharm" }) end },
 

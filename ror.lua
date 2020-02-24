@@ -1,10 +1,11 @@
 -- bjakushka@07.08.14
 -- Run Or Rise
---- Spawns cmd if no client can be found matching properties
+-- Spawns cmd if no client can be found matching properties
 -- If such a client can be found, pop to first tag where it is visible, and give it focus
 -- @param cmd the command to execute
 -- @param properties a table of properties to match against clients.  Possible entries: any properties of the client object
 local awful = require("awful")
+local naughty = require("naughty")
 
 function run_or_raise(cmd, properties)
    local clients = client.get()
@@ -12,6 +13,8 @@ function run_or_raise(cmd, properties)
    local findex = 0
    local matched_clients = {}
    local n = 0
+
+   -- iterate through spawned clients and try find same one
    for i, c in pairs(clients) do
       --make an array of matched clients
       if match(properties, c) then
@@ -22,6 +25,8 @@ function run_or_raise(cmd, properties)
          end
       end
    end
+
+   -- if matched clients could be found - rise first
    if n > 0 then
       local c = matched_clients[1]
       -- if the focused window matched switch focus to next in list
@@ -42,7 +47,9 @@ function run_or_raise(cmd, properties)
       c:raise()
       return
    end
-   awful.util.spawn(cmd)
+
+   -- spawn new client if nothing was found
+   awful.util.spawn(cmd, properties)
 end
 
 -- Returns true if all pairs in table1 are present in table2
